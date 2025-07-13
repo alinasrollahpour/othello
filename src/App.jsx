@@ -13,15 +13,35 @@ function App() {
   const [score, setScore] = useState([2, 2]);
   const [turn, setTurn] = useState('w');//either 'w' or 'b'
 
+  function switchTurn() {
+    //todo: complete the logic
+    setTurn((prevTurn) => {
+        if (prevTurn === 'w') return 'b';
+        else return 'w';
+      }
+    )
+    //todo: check if the user with updated turn, can apply any move at all?
+
+  }
+
   function handleSquareClick(row, col) {
     //todo
     //if is already empty
 
-    if (!table[row][col]) {
-      setTable((t)=> {t[row][col] = turn; return t;})
-    }
-    // for (let i of table) console.log(i);
-    // console.log('++++++++++++++++++++++')
+    //validate this choice
+    if (table[row][col]) return;
+    //todo: check if with this move, hev will gain anything or not
+    //if cannot gai
+
+    //
+    setTable((t) => {
+        t = [...t];
+        t[row][col] = turn;
+        return t;
+      }
+    );
+
+    switchTurn();
   }
 
   return <div id='total-container'>
@@ -39,7 +59,7 @@ function App() {
       </div>
     </div>
 
-    <GameBoard table={table} clickHandler={handleSquareClick} />
+    <GameBoard table={table} clickHandler={handleSquareClick}/>
   </div>;
 }
 

@@ -21,3 +21,10 @@ export function makeTable() {
   return table;
 }
 
+export function checkCanMove(table, color, row, col) {
+  //returns bool
+}
+
+export function checkCanMoveAtAll(table, color) {
+
+}
