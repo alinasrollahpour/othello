@@ -5,8 +5,25 @@ import PlayerCard from "./components/PlayerCard.jsx";
 import Button from "./components/Button.jsx";
 import GameBoard from "./components/GameBoard.jsx";
 import './components/Components.css';
+import {makeTable, resetTable} from './components/util.js';
+
 
 function App() {
+  const [table, setTable] = useState(makeTable());
+  const [score, setScore] = useState([2, 2]);
+  const [turn, setTurn] = useState('w');//either 'w' or 'b'
+
+  function handleSquareClick(row, col) {
+    //todo
+    //if is already empty
+
+    if (!table[row][col]) {
+      setTable((t)=> {t[row][col] = turn; return t;})
+    }
+    // for (let i of table) console.log(i);
+    // console.log('++++++++++++++++++++++')
+  }
+
   return <div id='total-container'>
     <div id='sidebar-container'>
       <OthelloBanner id='banner'/>
@@ -22,7 +39,7 @@ function App() {
       </div>
     </div>
 
-    <GameBoard/>
+    <GameBoard table={table} clickHandler={handleSquareClick} />
   </div>;
 }
 

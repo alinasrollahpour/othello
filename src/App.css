@@ -1,9 +1,19 @@
+#buttons-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+#sidebar-container {
+    width: 350px;
+}
 #total-container {
     padding-top: 15px;
     padding-bottom: 15px;
     padding-left: 15px;
     padding-right: 15px;
     display: flex;
+    justify-content: space-around;
+    align-items: center;
     background-color: lightgray;
     width: 1200px;
     height: 800px;

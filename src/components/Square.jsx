@@ -23,10 +23,10 @@ let rowStyles = {
 
 function Piece({color}) {
   let pieceStyles = {
-    borderRadius: '100px',
+    borderRadius: '1000px',
     border: 'none',
-    width: '90%',
-    height: '90%',
+    width: '80px',
+    height: '80px',
   }
   if (color === 'b') {pieceStyles.backgroundColor = 'black'}
   else if (color === 'w') {pieceStyles.backgroundColor = 'white'}
@@ -43,7 +43,7 @@ export function SquareRow(props) {
 export function Square({onClick, row, col, tableReference}) {
   let piece = tableReference[row][col]; //maybe null or 'w' or 'b'
   if (piece) piece = <Piece color={piece}/>
-  return <button style={squareStyles} className='square'>
+  return <button onClick={onClick} style={squareStyles} className='square'>
     {piece}
   </button>
 }
