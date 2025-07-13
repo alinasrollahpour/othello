@@ -58,5 +58,12 @@ export function checkAchievement(table, color, row, col) {
 }
 
 export function checkCanMoveAtAll(table, color) {
-
+  //apply checkAchievement for all squares and if any, return true
+  for (let i = 0 ; i < table.length; i++) {
+    for (let j = 0 ; j < table[0].length; j++) {
+      let gains = checkAchievement(table, color, i, j);
+      if (gains.length > 0) return true;
+    }
+  }
+  return false;
 }

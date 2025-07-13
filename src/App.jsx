@@ -6,38 +6,67 @@ import Button from "./components/Button.jsx";
 import GameBoard from "./components/GameBoard.jsx";
 import './components/Components.css';
 
-import {makeTable, checkAchievement, checkCanMoveAtAll} from './components/util.js';
+import {makeTable, checkAchievement, checkCanMoveAtAll, opponent} from './components/util.js';
 
 
 function App() {
+  //could also be 'draw', 'won'
+  const [playState, setPlayState] = useState('playing')
+
   const [table, setTable] = useState(makeTable());
   const [score, setScore] = useState([2, 2]);
   const [turn, setTurn] = useState('w');//either 'w' or 'b'
 
   function switchTurn() {
-    //todo: complete the logic
-    setTurn((prevTurn) => {
-        if (prevTurn === 'w') return 'b';
-        else return 'w';
+    //switch the turn
+    setTurn(opponent);
+    //check if the user with updated turn, can apply any move at all?
+    if (!checkCanMoveAtAll(table, turn)) {
+      //switch back
+      setTurn(opponent);
+      if (!checkCanMoveAtAll(table, opponent(turn))) {
+        console.log('Draw!!!')
+        //todo: set the state to draw
+
       }
-    )
-    //todo: check if the user with updated turn, can apply any move at all?
+    }
 
   }
 
   function handleSquareClick(row, col) {
-    //todo
-    //if is already empty
-
+    if (playState !== 'playing')return; //if its won or draw
     //validate this choice
+    //if is already empty
     if (table[row][col]) return;
-    //todo: check if with this move, he will gain anything or not
+    //check if with this move, he will gain anything or not
     let gains = checkAchievement(table, turn, row, col);
-    for (let coor of gains)console.log(coor);
-    console.log('================')
-    //if cannot gai
+    //if cannot gain anything, dont accept
+    if (gains.length === 0) {
+      //todo: alert that this has no conquer
+      return;
+    }
+    //todo:increase score
+    setScore((prevScore) => {
+      prevScore = [...prevScore];//make a copy
+      if (turn === 'w') {
+        prevScore[0] += (gains.length + 1);
+        prevScore[1] -= (gains.length);
+      }
+      else {
+        prevScore[1] += (gains.length + 1);
+        prevScore[0] -= (gains.length);
+      }
+      return prevScore;
+    })
 
-    //
+    //switch the victim pieces
+    let newTable = [...table];
+    for (let e of gains) {
+      newTable[e[0]] [e[1]] = turn;
+    }
+    setTable(newTable);
+
+    //fill the square that player just clicked
     setTable((t) => {
         t = [...t];
         t[row][col] = turn;
@@ -45,14 +74,15 @@ function App() {
       }
     );
 
+    //inside switchTurn check if is player locked ?
     switchTurn();
   }
 
   return <div id='total-container'>
     <div id='sidebar-container'>
       <OthelloBanner id='banner'/>
-      <PlayerCard className="player-card" id='w'></PlayerCard>
-      <PlayerCard className="player-card" id='b'></PlayerCard>
+      <PlayerCard className="player-card" id='w' turn={turn} score={score}></PlayerCard>
+      <PlayerCard className="player-card" id='b' turn={turn} score={score}></PlayerCard>
       <div id='buttons-container'>
         <Button id='restart-button'>
           Restart

@@ -1,6 +1,6 @@
 import './Components.css';
 
-export default ({id}) => {
+export default ({id, turn, score}) => {
   let cardStyles = {
     backgroundColor: 'white',
     borderRadius: '20px',
@@ -44,8 +44,8 @@ export default ({id}) => {
     inputStyles.color = 'white';
   }
 
-  return <div className='player-card' style={cardStyles}>
+  return <div className={`player-card ${ id === turn ? 'active' : null}`} style={cardStyles}>
     <input className='player-name' defaultValue={'Player'} style={inputStyles}/>
-    <p className='player-score' style={scoreStyles}>2</p>
+    <p className='player-score' style={scoreStyles}>{id === 'w' ? score[0] : score[1]}</p>
   </div>
 }
