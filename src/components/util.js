@@ -39,20 +39,22 @@ export function checkAchievement(table, color, row, col) {
     for (let j of [-1, 0, 1]) {
       if (i === 0 && j === 0) continue;
       let directionAchievement = [];
+      let seekRow = row, seekCol = col;
       //inside these loops we now have a direction, which is [i, j]
-      if (isInBoundary(row+i, col+j) && table[row+i][col+j] === opponent(color)) {
-        while (isInBoundary(row+i, col+j) && table[row+i][col+j] === opponent(color)) {
-          row += i; col += j;
-          directionAchievement.push([row, col]);
+      if (isInBoundary(seekRow+i, seekCol+j) && table[seekRow+i][seekCol+j] === opponent(color)) {
+        while (isInBoundary(seekRow+i, seekCol+j) && table[seekRow+i][seekCol+j] === opponent(color)) {
+          seekRow += i; seekCol += j;
+          directionAchievement.push([seekRow, seekCol]);
         }
         //check if at the end, some piece with same color exists
-        if (isInBoundary(row+i, col+j) && table[row+i][col+j] === color) {
+        if (isInBoundary(seekRow+i, seekCol+j) && table[seekRow+i][seekCol+j] === color) {
           //then these in directionAchievement are valid, and we have to add them to achievement
           achievements = [...achievements, ...directionAchievement];
         }
       }
     }
   }
+  return achievements;
 }
 
 export function checkCanMoveAtAll(table, color) {

@@ -5,7 +5,8 @@ import PlayerCard from "./components/PlayerCard.jsx";
 import Button from "./components/Button.jsx";
 import GameBoard from "./components/GameBoard.jsx";
 import './components/Components.css';
-import {makeTable, resetTable} from './components/util.js';
+
+import {makeTable, checkAchievement, checkCanMoveAtAll} from './components/util.js';
 
 
 function App() {
@@ -30,7 +31,10 @@ function App() {
 
     //validate this choice
     if (table[row][col]) return;
-    //todo: check if with this move, hev will gain anything or not
+    //todo: check if with this move, he will gain anything or not
+    let gains = checkAchievement(table, turn, row, col);
+    for (let coor of gains)console.log(coor);
+    console.log('================')
     //if cannot gai
 
     //
