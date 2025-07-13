@@ -1,0 +1,5 @@
+* {
+    font-family: 'Roboto', sans-serif; /* Apply Roboto */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
