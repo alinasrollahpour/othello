@@ -12,29 +12,55 @@ import {makeTable, checkAchievement, checkCanMoveAtAll, opponent} from './compon
 function App() {
   //could also be 'draw', 'won'
   const [playState, setPlayState] = useState('playing')
+  const [winner, setWinner] = useState(null);
 
   const [table, setTable] = useState(makeTable());
   const [score, setScore] = useState([2, 2]);
   const [turn, setTurn] = useState('w');//either 'w' or 'b'
 
+  function checkWon() {
+    if (score[0] === 0) {
+      setWinner('b');
+    } else if (score[1] === 0) {
+      setWinner('w');
+    } else if (score[0] + score[1] === 64) {
+      if (score[0] > score[1]) {
+        setWinner('w');
+      } else if (score[1] > score[0]) {
+        setWinner('b');
+      } else {
+        setPlayState('draw');
+      }
+    }
+  }
+
   function switchTurn() {
+    //check if someone won
+    checkWon();
     //switch the turn
     setTurn(opponent);
     //check if the user with updated turn, can apply any move at all?
-    if (!checkCanMoveAtAll(table, turn)) {
+    if (!checkCanMoveAtAll(table, opponent(turn))) {
       //switch back
       setTurn(opponent);
-      if (!checkCanMoveAtAll(table, opponent(turn))) {
+      if (!checkCanMoveAtAll(table, turn)) {
         console.log('Draw!!!')
-        //todo: set the state to draw
-
+        setPlayState('draw');
       }
     }
-
   }
 
   function handleSquareClick(row, col) {
-    if (playState !== 'playing')return; //if its won or draw
+    if (winner) {
+      setPlayState('won');
+      console.log(winner + ' won!!!')
+      return;
+    }
+    if (playState === 'draw') {
+      console.log('Draw!!!')
+      return;
+    }
+    //if (!winner && playState !== 'playing')return; //if its won or draw
     //validate this choice
     //if is already empty
     if (table[row][col]) return;
@@ -43,16 +69,16 @@ function App() {
     //if cannot gain anything, dont accept
     if (gains.length === 0) {
       //todo: alert that this has no conquer
+      console.log('Has no conquer!!!')
       return;
     }
-    //todo:increase score
+    //manipulate scores
     setScore((prevScore) => {
       prevScore = [...prevScore];//make a copy
       if (turn === 'w') {
         prevScore[0] += (gains.length + 1);
         prevScore[1] -= (gains.length);
-      }
-      else {
+      } else {
         prevScore[1] += (gains.length + 1);
         prevScore[0] -= (gains.length);
       }
